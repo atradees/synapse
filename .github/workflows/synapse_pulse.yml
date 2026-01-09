@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      # --- 2. INSTALL LIBRARIES ---
+      # --- 2. INSTALL PYTHON LIBRARIES ---
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -31,12 +31,10 @@ jobs:
 
       # --- 3. RUN BRAIN ENGINE (FIX DB LOCK) ---
       - name: Run Processor
-        # Kita tambahkan folder cache custom untuk yfinance agar tidak lock
         run: |
           mkdir -p /tmp/py_cache
           python data_engine/processor.py
         env:
-          # Trik untuk mencegah yfinance cache lock
           YFINANCE_CACHE_DIR: /tmp/py_cache
 
       # --- 4. SAVE DATA ---
@@ -48,17 +46,16 @@ jobs:
           git commit -m "🧠 Neural Update: Fresh Market Data" || echo "No changes to commit"
           git push
 
-      # --- 5. BUILD WEB (UPGRADED TO NODE 22) ---
+      # --- 5. BUILD WEB (NODE 22 + CLEAN INSTALL) ---
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22  # <--- CRITICAL UPDATE DARI 18 KE 22
+          node-version: 22
 
       - name: Install & Build
         working-directory: ./web
-        # Gunakan npm ci agar lebih bersih di server
         run: |
-          npm install
+          npm ci  # <--- GANTI DARI 'npm install' KE 'npm ci'
           npm run build
 
       # --- 6. DEPLOY ---
