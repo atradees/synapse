@@ -1,0 +1,64 @@
+name: Synapse Pulse (Data Update & Deploy)
+
+on:
+  # Update tiap jam 00:00 dan 12:00 UTC (07:00 & 19:00 WIB)
+  schedule:
+    - cron: '0 0,12 * * *' 
+  # Bisa trigger manual juga lewat tab Actions
+  workflow_dispatch:
+  # Trigger saat ada push ke main
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # --- STEP 1: RUN DATA ENGINE (PYTHON) ---
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r data_engine/requirements.txt
+
+      - name: Run Processor (Update Brain)
+        run: |
+          python data_engine/processor.py
+
+      # --- STEP 2: COMMIT DATA BARU (JIKA ADA) ---
+      - name: Commit New Data
+        run: |
+          git config --global user.name 'Synapse Bot'
+          git config --global user.email 'bot@synapse.ai'
+          git add web/public/data/brain_data.json
+          # Commit hanya jika ada perubahan, kalau tidak skip
+          git commit -m "🧠 Neural Update: Fresh Market Data" || echo "No data changes"
+          git push
+
+      # --- STEP 3: BUILD WEB (REACT) ---
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Node Deps & Build
+        working-directory: ./web
+        run: |
+          npm install
+          npm run build
+
+      # --- STEP 4: DEPLOY KE GITHUB PAGES ---
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web/dist
