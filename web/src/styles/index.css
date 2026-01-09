@@ -14,3 +14,8 @@ body {
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Di file src/index.css */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

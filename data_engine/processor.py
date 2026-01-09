@@ -141,16 +141,10 @@ def generate_snapshot(df, lookback_days, metadata, semantic_df, logic_rules):
             if abs(val) > 0.25: 
                 G.add_edge(hybrid.columns[i], hybrid.columns[j], weight=safe_float(val))
 
-    # --- SKELETON CALCULATION (MST) ---
-    # Kita cari Maximum Spanning Tree karena bobot = korelasi (kekuatan)
-    # Semakin kuat korelasi, semakin penting edge-nya.
     try:
-        # Copy graph untuk perhitungan MST
         G_mst = G.copy()
-        # Pastikan bobot absolut untuk MST
         for u, v, d in G_mst.edges(data=True): d['weight'] = abs(d['weight'])
         
-        # Hitung Maximum Spanning Tree
         skeleton_graph = nx.maximum_spanning_tree(G_mst)
         skeleton_edges = set(frozenset((u, v)) for u, v in skeleton_graph.edges())
     except:
@@ -187,7 +181,6 @@ def generate_snapshot(df, lookback_days, metadata, semantic_df, logic_rules):
             "price": round(safe_float(last_price.get(t, 0)), 2)
         })
 
-    # Inject isSkeleton Flag
     links = []
     for u, v, d in G.edges(data=True):
         is_skel = frozenset((u, v)) in skeleton_edges
@@ -195,7 +188,7 @@ def generate_snapshot(df, lookback_days, metadata, semantic_df, logic_rules):
             "source": u, 
             "target": v, 
             "value": round(safe_float(d['weight']), 4),
-            "isSkeleton": is_skel # <--- INI KUNCINYA
+            "isSkeleton": is_skel 
         })
 
     avg_stress = np.mean([abs(l['value']) for l in links]) if links else 0
