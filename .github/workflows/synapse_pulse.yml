@@ -23,13 +23,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      # --- 2. INSTALL PYTHON LIBRARIES ---
+      # --- 2. INSTALL PYTHON LIBS ---
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pandas numpy yfinance networkx scikit-learn sentence-transformers python-louvain
 
-      # --- 3. RUN BRAIN ENGINE (FIX DB LOCK) ---
+      # --- 3. RUN BRAIN ENGINE ---
       - name: Run Processor
         run: |
           mkdir -p /tmp/py_cache
@@ -37,7 +37,7 @@ jobs:
         env:
           YFINANCE_CACHE_DIR: /tmp/py_cache
 
-      # --- 4. SAVE DATA ---
+      # --- 4. COMMIT DATA ---
       - name: Commit New Data
         run: |
           git config --global user.name 'Synapse Bot'
@@ -46,7 +46,7 @@ jobs:
           git commit -m "🧠 Neural Update: Fresh Market Data" || echo "No changes to commit"
           git push
 
-      # --- 5. BUILD WEB (NODE 22 + CLEAN INSTALL) ---
+      # --- 5. BUILD WEB (BRUTAL FRESH INSTALL) ---
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -55,7 +55,16 @@ jobs:
       - name: Install & Build
         working-directory: ./web
         run: |
-          npm ci  # <--- GANTI DARI 'npm install' KE 'npm ci'
+          # 1. Hapus sisa-sisa file lama (PENTING)
+          rm -rf node_modules package-lock.json
+          
+          # 2. Install dependencies baru dari package.json yang baru
+          npm install
+          
+          # 3. FIX PERMISSION DENIED (SOLUSI FINAL)
+          chmod +x node_modules/.bin/vite
+          
+          # 4. Build
           npm run build
 
       # --- 6. DEPLOY ---
