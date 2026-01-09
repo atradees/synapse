@@ -1,0 +1,18 @@
+# Node modules (SAMPAH TERBESAR)
+node_modules/
+npm-debug.log
+
+# Python Virtual Env (SAMPAH KEDUA)
+venv/
+__pycache__/
+*.pyc
+
+# System
+.DS_Store
+Thumbs.db
+
+# Build Output (Kita build di server, jangan upload manual)
+web/dist/
+
+# Env vars
+.env

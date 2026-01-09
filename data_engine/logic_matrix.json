@@ -1,0 +1,122 @@
+{
+  "Agriculture": {
+    "Agriculture": 1.0,
+    "Crypto": 0.2,
+    "Energy": 1.0,
+    "Forex": 0.5,
+    "Global Equity": 0.5,
+    "Mega Caps": 0.2,
+    "Metals": 0.5,
+    "Rates": 0.5,
+    "US Sectors": 1.0,
+    "Volatility": 0.7
+  },
+  "Crypto": {
+    "Agriculture": 0.2,
+    "Crypto": 1.0,
+    "Energy": 0.4,
+    "Forex": 0.5,
+    "Global Equity": 0.5,
+    "Mega Caps": 0.5,
+    "Metals": 0.0,
+    "Rates": 0.5,
+    "US Sectors": 0.6,
+    "Volatility": 0.6
+  },
+  "Energy": {
+    "Agriculture": 1.0,
+    "Crypto": 0.4,
+    "Energy": 1.0,
+    "Forex": 0.8,
+    "Global Equity": 0.7,
+    "Mega Caps": 0.5,
+    "Metals": 0.6,
+    "Rates": 0.7,
+    "US Sectors": 0.6,
+    "Volatility": 0.7
+  },
+  "Forex": {
+    "Agriculture": 0.5,
+    "Crypto": 0.5,
+    "Energy": 0.8,
+    "Forex": 1.0,
+    "Global Equity": 0.8,
+    "Mega Caps": 0.2,
+    "Metals": 0.8,
+    "Rates": 0.8,
+    "US Sectors": 1.0,
+    "Volatility": 0.6
+  },
+  "Global Equity": {
+    "Agriculture": 0.5,
+    "Crypto": 0.5,
+    "Energy": 0.7,
+    "Forex": 0.8,
+    "Global Equity": 1.0,
+    "Mega Caps": 0.5,
+    "Metals": 0.5,
+    "Rates": 0.6,
+    "US Sectors": 0.8,
+    "Volatility": 0.65
+  },
+  "Mega Caps": {
+    "Agriculture": 0.2,
+    "Crypto": 0.5,
+    "Energy": 0.5,
+    "Forex": 0.2,
+    "Global Equity": 0.5,
+    "Mega Caps": 1.0,
+    "Metals": 0.4,
+    "Rates": 0.2,
+    "US Sectors": 0.8,
+    "Volatility": 0.2
+  },
+  "Metals": {
+    "Agriculture": 0.5,
+    "Crypto": 0.0,
+    "Energy": 0.6,
+    "Forex": 0.8,
+    "Global Equity": 0.5,
+    "Mega Caps": 0.4,
+    "Metals": 1.0,
+    "Rates": 0.6,
+    "US Sectors": 0.6,
+    "Volatility": 0.8
+  },
+  "Rates": {
+    "Agriculture": 0.5,
+    "Crypto": 0.5,
+    "Energy": 0.7,
+    "Forex": 0.8,
+    "Global Equity": 0.6,
+    "Mega Caps": 0.2,
+    "Metals": 0.6,
+    "Rates": 1.0,
+    "US Sectors": 1.0,
+    "Volatility": 0.7
+  },
+  "US Sectors": {
+    "Agriculture": 1.0,
+    "Crypto": 0.6,
+    "Energy": 0.6,
+    "Forex": 1.0,
+    "Global Equity": 0.8,
+    "Mega Caps": 0.8,
+    "Metals": 0.6,
+    "Rates": 1.0,
+    "US Sectors": 1.0,
+    "Volatility": 0.8
+  },
+  "Volatility": {
+    "Agriculture": 0.7,
+    "Crypto": 0.6,
+    "Energy": 0.7,
+    "Forex": 0.6,
+    "Global Equity": 0.65,
+    "Mega Caps": 0.2,
+    "Metals": 0.8,
+    "Rates": 0.7,
+    "US Sectors": 0.8,
+    "Volatility": 1.0
+  }
+}
