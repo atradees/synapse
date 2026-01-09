@@ -1,12 +1,9 @@
 name: Synapse Pulse (Auto Update)
 
 on:
-  # Update tiap jam 6 pagi & 6 sore WIB (23:00 & 11:00 UTC)
   schedule:
     - cron: '0 23,11 * * *' 
-  # Bisa trigger manual
   workflow_dispatch:
-  # Trigger saat push ke main
   push:
     branches: ["main"]
 
@@ -20,31 +17,33 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # --- 1. UPDATE DATA (PYTHON) ---
+      # --- 1. SETUP PYTHON ---
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Install Python Libs
+      # --- 2. INSTALL LIBRARIES (FORCE MODE) ---
+      - name: Install Python Dependencies
         run: |
-          pip install -r data_engine/requirements.txt
+          python -m pip install --upgrade pip
+          pip install pandas numpy yfinance networkx scikit-learn sentence-transformers python-louvain
 
+      # --- 3. RUN BRAIN ENGINE ---
       - name: Run Processor
         run: |
           python data_engine/processor.py
 
-      # --- 2. SIMPAN DATA BARU KE REPO ---
+      # --- 4. SAVE DATA ---
       - name: Commit New Data
         run: |
           git config --global user.name 'Synapse Bot'
           git config --global user.email 'bot@synapse.ai'
           git add web/public/data/brain_data.json
-          # Commit hanya jika ada perubahan
           git commit -m "🧠 Neural Update: Fresh Market Data" || echo "No changes to commit"
           git push
 
-      # --- 3. BUILD WEBSITE (REACT) ---
+      # --- 5. BUILD WEB ---
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -56,7 +55,7 @@ jobs:
           npm install
           npm run build
 
-      # --- 4. DEPLOY KE GITHUB PAGES ---
+      # --- 6. DEPLOY ---
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
