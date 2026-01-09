@@ -11,6 +11,13 @@ from sentence_transformers import SentenceTransformer, util
 from datetime import datetime
 import warnings
 
+try:
+    # Pakai folder temp unik untuk cache session ini
+    import tempfile
+    yf.set_tz_cache_location(tempfile.mkdtemp())
+except:
+    pass
+
 warnings.filterwarnings("ignore")
 
 # --- CONFIG ---

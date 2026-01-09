@@ -17,22 +17,27 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # --- 1. SETUP PYTHON (UPGRADED TO 3.11) ---
+      # --- 1. SETUP PYTHON (3.11) ---
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # <--- INI KUNCINYA (Upgrade dari 3.9)
+          python-version: '3.11'
 
-      # --- 2. INSTALL LIBRARIES (FORCE MODE) ---
+      # --- 2. INSTALL LIBRARIES ---
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pandas numpy yfinance networkx scikit-learn sentence-transformers python-louvain
 
-      # --- 3. RUN BRAIN ENGINE ---
+      # --- 3. RUN BRAIN ENGINE (FIX DB LOCK) ---
       - name: Run Processor
+        # Kita tambahkan folder cache custom untuk yfinance agar tidak lock
         run: |
+          mkdir -p /tmp/py_cache
           python data_engine/processor.py
+        env:
+          # Trik untuk mencegah yfinance cache lock
+          YFINANCE_CACHE_DIR: /tmp/py_cache
 
       # --- 4. SAVE DATA ---
       - name: Commit New Data
@@ -43,14 +48,15 @@ jobs:
           git commit -m "🧠 Neural Update: Fresh Market Data" || echo "No changes to commit"
           git push
 
-      # --- 5. BUILD WEB ---
+      # --- 5. BUILD WEB (UPGRADED TO NODE 22) ---
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22  # <--- CRITICAL UPDATE DARI 18 KE 22
 
       - name: Install & Build
         working-directory: ./web
+        # Gunakan npm ci agar lebih bersih di server
         run: |
           npm install
           npm run build
